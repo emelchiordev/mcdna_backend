@@ -2,7 +2,7 @@ FROM composer:2.3.8 as composer_build
 
 WORKDIR /app
 COPY . /app
-RUN composer install --optimize-autoloader --no-dev --ignore-platform-reqs --no-interaction --no-scripts --prefer-dist \
+RUN composer install --optimize-autoloader  --ignore-platform-reqs --no-interaction --no-scripts --prefer-dist \
     && composer require annotations
 
 
