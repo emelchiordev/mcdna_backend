@@ -13,26 +13,6 @@ RUN apt-get install -y libpq-dev \
 ENV APP_HOME /var/www/html
 COPY --from=composer_build /app/ /var/www/html/
 RUN sed -i -e "s/html/html\/public/g" /etc/apache2/sites-enabled/000-default.conf \
-    && echo "DirectoryIndex index.php" >> /etc/apache2/sites-enabled/000-default.conf \
-    && echo "<IfModule mod_negotiation.c>" >> /etc/apache2/sites-enabled/000-default.conf \
-    && echo "    Options -MultiViews" >> /etc/apache2/sites-enabled/000-default.conf \
-    && echo "</IfModule>" >> /etc/apache2/sites-enabled/000-default.conf \
-    && echo "<IfModule mod_rewrite.c>" >> /etc/apache2/sites-enabled/000-default.conf \
-    && echo "    RewriteEngine On" >> /etc/apache2/sites-enabled/000-default.conf \
-    && echo "    RewriteCond %{REQUEST_URI}::$0 ^(/.+)/(.*)::\2$" >> /etc/apache2/sites-enabled/000-default.conf \
-    && echo "    RewriteRule .* - [E=BASE:%1]" >> /etc/apache2/sites-enabled/000-default.conf \
-    && echo "    RewriteCond %{HTTP:Authorization} .+" >> /etc/apache2/sites-enabled/000-default.conf \
-    && echo "    RewriteRule ^ - [E=HTTP_AUTHORIZATION:%0]" >> /etc/apache2/sites-enabled/000-default.conf \
-    && echo "    RewriteCond %{ENV:REDIRECT_STATUS} =''" >> /etc/apache2/sites-enabled/000-default.conf \
-    && echo "    RewriteRule ^index\.php(?:/(.*)|$) %{ENV:BASE}/$1 [R=301,L]" >> /etc/apache2/sites-enabled/000-default.conf \
-    && echo "    RewriteCond %{REQUEST_FILENAME} !-f" >> /etc/apache2/sites-enabled/000-default.conf \
-    && echo "    RewriteRule ^ %{ENV:BASE}/index.php [L]" >> /etc/apache2/sites-enabled/000-default.conf \
-    && echo "</IfModule>" >> /etc/apache2/sites-enabled/000-default.conf \
-    && echo "<IfModule !mod_rewrite.c>" >> /etc/apache2/sites-enabled/000-default.conf \
-    && echo "    <IfModule mod_alias.c>" >> /etc/apache2/sites-enabled/000-default.conf \
-    && echo "        RedirectMatch 307 ^/$ /index.php/" >> /etc/apache2/sites-enabled/000-default.conf \
-    && echo "    </IfModule>" >> /etc/apache2/sites-enabled/000-default.conf \
-    && echo "</IfModule>" >> /etc/apache2/sites-enabled/000-default.conf \
     && usermod -u 1000 www-data && groupmod -g 1000 www-data \
     && chown -R www-data:www-data /var/www/html \
     && a2enmod rewrite 
