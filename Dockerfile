@@ -13,7 +13,7 @@ RUN apt-get install -y libpq-dev \
 ENV APP_HOME /var/www/html
 COPY --from=composer_build /app/ /var/www/html/
 RUN sed -i -e "s/html/html\/public/g" /etc/apache2/sites-enabled/000-default.conf \
-    RUN echo "DirectoryIndex index.php" >> /etc/apache2/mods-enabled/dir.conf \
+    && echo "DirectoryIndex index.php" >> /etc/apache2/sites-enabled/000-default.conf \
     && echo "<IfModule mod_negotiation.c>" >> /etc/apache2/sites-enabled/000-default.conf \
     && echo "    Options -MultiViews" >> /etc/apache2/sites-enabled/000-default.conf \
     && echo "</IfModule>" >> /etc/apache2/sites-enabled/000-default.conf \
