@@ -2,8 +2,12 @@ FROM composer:2.3.8 as composer_build
 
 WORKDIR /app
 COPY . /app
-RUN composer install --optimize-autoloader  --ignore-platform-reqs --no-interaction --no-scripts --prefer-dist \
+RUN composer install --optimize-autoloader --no-dev --ignore-platform-reqs --no-interaction --no-scripts --prefer-dist \
     && composer require annotations
+
+RUN composer require symfony/requirements-checker
+
+RUN php bin/console cache:clear
 
 
 # Utilisez une version récente de PHP avec Apache
