@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     libfreetype6-dev
 
+
 # Installez les extensions PHP nécessaires pour Symfony
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) intl pdo pdo_pgsql gd zip
@@ -31,6 +32,7 @@ RUN a2enmod headers
 
 # Définissez l'emplacement de l'application dans le conteneur Docker
 ENV APP_HOME /var/www/html
+COPY --from=composer_build /app/ /var/www/html/
 
 # Copiez l'application dans le conteneur Docker
 COPY . $APP_HOME
