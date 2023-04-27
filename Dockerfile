@@ -16,6 +16,6 @@ RUN sed -i -e "s/html/html\/public/g" /etc/apache2/sites-enabled/000-default.con
     && usermod -u 1000 www-data && groupmod -g 1000 www-data \
     && chown -R www-data:www-data /var/www/html \
     && a2enmod rewrite  \
-    && cp /var/www/html/public/.htaccess /var/www/html/public
+    && cp public/.htaccess /var/www/html/public/
 ENTRYPOINT []
 CMD docker-php-entrypoint apache2-foreground
