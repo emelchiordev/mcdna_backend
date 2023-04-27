@@ -23,7 +23,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) intl pdo pdo_pgsql gd zip
 
 # Copiez votre fichier de configuration Apache dans le conteneur
-COPY apache.conf /etc/apache2/sites-available/000-default.conf
+COPY apache2.conf /etc/apache2/sites-available/000-default.conf
 
 # Activer les modules Apache nécessaires pour Symfony
 RUN a2enmod rewrite
