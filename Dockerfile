@@ -11,7 +11,7 @@ RUN php bin/console cache:clear
 
 
 # Utilisez une version récente de PHP avec Apache
-FROM php:8.1.8-apache
+FROM webdevops/php-apache
 
 # Installez les dépendances nécessaires pour installer les extensions PHP
 RUN apt-get update && apt-get install -y \
