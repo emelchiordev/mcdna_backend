@@ -6,6 +6,7 @@ RUN composer install --optimize-autoloader --no-dev --ignore-platform-reqs --no-
     && composer require annotations
 
 FROM php:8.1.8-apache
+RUN docker-php-ext-install pdo pdo_pgsql
 ENV APP_HOME /var/www/html
 COPY --from=composer_build /app/ /var/www/html/
 RUN sed -i -e "s/html/html\/public/g" /etc/apache2/sites-enabled/000-default.conf \
