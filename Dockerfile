@@ -9,7 +9,8 @@ RUN composer install --optimize-autoloader --no-dev --ignore-platform-reqs --no-
 FROM php:8.1-apache
 RUN a2enmod rewrite
 
-ENV DATABASE_URL="${DATABASE_URL}"
+COPY env_vars.env /etc/env_vars.env
+
 
 RUN apt-get update \
     && apt-get install -y libzip-dev git wget --no-install-recommends \
