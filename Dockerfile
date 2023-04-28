@@ -20,7 +20,7 @@ WORKDIR /var/www/html
 
 # … cut for readability
 
-RUN chmod +x /entrypoint.sh
+RUN chmod +x entrypoint.sh
 
 CMD ["apache2-foreground"]
 
