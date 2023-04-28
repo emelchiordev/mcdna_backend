@@ -5,7 +5,7 @@ COPY . /app
 RUN composer install --optimize-autoloader --no-dev --ignore-platform-reqs --no-interaction --no-scripts --prefer-dist \
     && composer require annotations
 
-RUN apt-get update && apt-get install -y \
+RUN apt update && apt install -y \
     libicu-dev \
     && docker-php-ext-configure intl \
     && docker-php-ext-install intl
