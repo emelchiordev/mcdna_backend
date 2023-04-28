@@ -14,7 +14,7 @@ RUN wget https://getcomposer.org/download/2.0.9/composer.phar \
 COPY symfony.conf /etc/apache2/sites-enabled/000-default.conf
 COPY entrypoint.sh /entrypoint.sh
 
-COPY . /var/www
+COPY . /var/www/html
 
 WORKDIR /var/www/html
 
