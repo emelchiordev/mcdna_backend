@@ -16,7 +16,7 @@ COPY entrypoint.sh /entrypoint.sh
 
 COPY . /var/www
 
-WORKDIR /var/www
+WORKDIR /var/www/html
 
 # … cut for readability
 
