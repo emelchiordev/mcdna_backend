@@ -12,7 +12,7 @@ RUN wget https://getcomposer.org/download/2.0.9/composer.phar \
     && mv composer.phar /usr/bin/composer && chmod +x /usr/bin/composer
 
 COPY symfony.conf /etc/apache2/sites-enabled/000-default.conf
-COPY entrypoint.sh /entrypoint.sh
+COPY ./entrypoint.sh /entrypoint.sh
 
 COPY . /var/www/html
 
@@ -20,7 +20,7 @@ WORKDIR /var/www/html
 
 # … cut for readability
 
-RUN chmod +x entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 CMD ["apache2-foreground"]
 
