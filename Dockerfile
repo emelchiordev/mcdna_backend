@@ -12,7 +12,7 @@ RUN a2enmod rewrite
 RUN apt-get update \
     && apt-get install -y libzip-dev git wget --no-install-recommends \
     && apt-get clean \
-    && apt-get libpq-dev \
+    && apt-get install -y libpq-dev \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN docker-php-ext-install pdo pdo_pgsql mysqli pdo_mysql zip
