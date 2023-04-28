@@ -9,6 +9,8 @@ FROM php:8.1.8-apache
 ENV APP_HOME /var/www/html
 COPY --from=composer_build /app/ /var/www/html/
 RUN sed -i -e "s/html/html\/public/g" /etc/apache2/sites-enabled/000-default.conf \
+    && echo "LogLevel debug" >> /etc/apache2/sites-enabled/000-default.conf \
+    && echo "ErrorLog /var/log/apache2/error.log" >> /etc/apache2/sites-enabled/000-default.conf \
     && usermod -u 1000 www-data && groupmod -g 1000 www-data \
     && chown -R www-data:www-data /var/www/html \
     && a2enmod rewrite
