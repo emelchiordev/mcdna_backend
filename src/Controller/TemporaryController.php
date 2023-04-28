@@ -12,9 +12,10 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class TemporaryController extends AbstractController
 {
-    #[Route('/temporary', name: 'app_temporary')]
+    #[Route('/', name: 'app_temporary')]
     public function index(EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
+        /*
         $user = new User();
         $user->setEmail("manu.melchior@gmail.com");
         $plainPassword = "281188";
@@ -22,7 +23,7 @@ class TemporaryController extends AbstractController
         $user->setPassword($hashPassword);
         $entityManager->persist($user);
         $entityManager->flush();
-
+*/
         return $this->render('temporary/index.html.twig', [
             'controller_name' => 'TemporaryController',
         ]);
