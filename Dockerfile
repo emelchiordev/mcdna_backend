@@ -29,7 +29,8 @@ COPY . /var/www/html
 WORKDIR /var/www/html
 
 COPY --from=composer_build /app/ /var/www/html/
-
+# Génération de la paire de clés Lexik JWT
+RUN php bin/console lexik:jwt:generate-keypair
 
 # … cut for readability
 
