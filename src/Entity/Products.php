@@ -11,6 +11,8 @@ use App\Repository\ProductsRepository;
 use ApiPlatform\Metadata\GetCollection;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: ProductsRepository::class)]
 #[ORM\Table(name: 'products')]
@@ -27,16 +29,28 @@ class Products
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(message: "Le libellé est obligatoire")]
     #[ORM\Column(length: 255)]
     private ?string $label = null;
 
+    #[Assert\NotBlank(message: "La description est obligatoire")]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
+    #[Assert\NotBlank(message: "Le prix est obligatoire")]
+    #[Assert\PositiveOrZero(message: " Le prix doit être supérieur à 0 €")]
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $price = null;
 
     #[Vich\UploadableField(mapping: 'products', fileNameProperty: 'imageName')]
+    #[Assert\NotBlank(message: "Vous devez uploader une image")]
+    #[
+        Assert\File(
+            maxSize: "2M",
+            mimeTypes: ['image/png', 'image/jpeg'],
+            mimeTypesMessage: 'Le fichier doit être au format jpeg ou png'
+        )
+    ]
     private ?File $imageFile = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
