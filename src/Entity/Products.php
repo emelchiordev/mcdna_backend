@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -106,6 +107,23 @@ class Products
 
     #[ORM\OneToMany(mappedBy: 'products', targetEntity: Promotions::class)]
     private Collection $promotions;
+
+    #[ApiProperty()]
+    #[Groups(['product_read'])]
+    public function getDiscountPrice(): ?array
+    {
+        $now = new \DateTimeImmutable();
+        $discountedPrice = null;
+
+        foreach ($this->promotions as $promotion) {
+            if ($now >= $promotion->getStartDate() && $now <= $promotion->getEndDate()) {
+                $discountedPrice = [$this->getPrice() * (1 - $promotion->getPercentage() / 100), $promotion->getPercentage()];
+                break;
+            }
+        }
+
+        return $discountedPrice;
+    }
 
     public function __construct()
     {

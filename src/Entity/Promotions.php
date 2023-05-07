@@ -3,10 +3,11 @@
 namespace App\Entity;
 
 
-use App\Validator\ValideDate;
 use ApiPlatform\Metadata\Get;
+use App\Validator\ValideDate;
 use ApiPlatform\Metadata\Post;
 use Doctrine\DBAL\Types\Types;
+use ApiPlatform\Metadata\Delete;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -20,7 +21,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 #[ApiResource(operations: [
     new Post(),
     new GetCollection(),
-    new Get()
+    new Get(),
+    new Delete()
 ])]
 #[ApiFilter(SearchFilter::class, properties: ['products.id' => 'exact'])]
 class Promotions
