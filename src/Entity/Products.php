@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
@@ -102,6 +104,14 @@ class Products
     #[Assert\NotBlank(message: "Vous devez sélectionner une catégorie", groups: ["update_product", 'create_product'])]
     private ?Category $category = null;
 
+    #[ORM\OneToMany(mappedBy: 'products', targetEntity: Promotions::class)]
+    private Collection $promotions;
+
+    public function __construct()
+    {
+        $this->promotions = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -185,6 +195,36 @@ class Products
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Promotions>
+     */
+    public function getPromotions(): Collection
+    {
+        return $this->promotions;
+    }
+
+    public function addPromotion(Promotions $promotion): self
+    {
+        if (!$this->promotions->contains($promotion)) {
+            $this->promotions->add($promotion);
+            $promotion->setProducts($this);
+        }
+
+        return $this;
+    }
+
+    public function removePromotion(Promotions $promotion): self
+    {
+        if ($this->promotions->removeElement($promotion)) {
+            // set the owning side to null (unless already changed)
+            if ($promotion->getProducts() === $this) {
+                $promotion->setProducts(null);
+            }
+        }
 
         return $this;
     }

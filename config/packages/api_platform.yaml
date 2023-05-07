@@ -1,4 +1,6 @@
 api_platform:
+    defaults:
+        pagination_enabled: false
     metadata_backward_compatibility_layer: false
     mapping:
         paths: ['%kernel.project_dir%/src/Entity']
