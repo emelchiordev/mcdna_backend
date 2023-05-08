@@ -2,23 +2,28 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Post;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
-use App\Repository\ProductsRepository;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Put;
-use Doctrine\ORM\Query\AST\UpdateItem;
-use Symfony\Component\HttpFoundation\File\File;
+use ApiPlatform\Metadata\Post;
+use Doctrine\DBAL\Types\Types;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Mime\Message;
+use ApiPlatform\Metadata\ApiResource;
+use App\Repository\ProductsRepository;
+use Doctrine\ORM\Query\AST\UpdateItem;
 use Symfony\Component\Mime\RawMessage;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use App\Controller\ProductPromotionController;
+use App\State\ProductPromotionProvider;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -28,6 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'products')]
 #[Vich\Uploadable]
 #[ApiResource(operations: [
+    new GetCollection(uriTemplate: "/products/withActivePromotion", provider: ProductPromotionProvider::class),
     new GetCollection(),
     new Get(),
     new Post(
@@ -43,6 +49,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 ], normalizationContext: [
     'groups' => ['product_read', 'create_product']
 ])]
+#[ApiFilter(SearchFilter::class, properties: ['discountPrice' => 'exact'])]
 #[ORM\HasLifecycleCallbacks]
 class Products
 {
