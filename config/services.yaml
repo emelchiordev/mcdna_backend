@@ -20,5 +20,12 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    App\Normalizer\DateTimeNormalizer:
+        tags: [serializer.normalizer]
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\State\ProductPromotionProvider: ~
+    App\State\PromotionEndDateProcessor:
+        bind:
+            $decorated: '@api_platform.doctrine.orm.state.persist_processor'
+
