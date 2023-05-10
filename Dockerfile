@@ -35,6 +35,10 @@ COPY --from=composer_build /app/ /var/www/html/
 # Génération de la paire de clés Lexik JWT
 RUN php bin/console lexik:jwt:generate-keypair
 
+RUN mkdir -p var/cache/prod/pools/system && \
+    chown -R www-data var/cache/prod && \
+    chmod -R 777 var/cache/prod
+
 # … cut for readability
 
 RUN chmod +x /entrypoint.sh
