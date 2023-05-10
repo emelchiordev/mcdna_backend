@@ -14,12 +14,13 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use App\Repository\PromotionsRepository;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use App\State\PromotionEndDateProcessor;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: PromotionsRepository::class)]
 #[ApiResource(operations: [
-    new Post(),
+    new Post(processor: PromotionEndDateProcessor::class),
     new GetCollection(),
     new Get(),
     new Delete()

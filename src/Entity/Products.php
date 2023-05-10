@@ -9,20 +9,16 @@ use Doctrine\DBAL\Types\Types;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Mime\Message;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProductsRepository;
-use Doctrine\ORM\Query\AST\UpdateItem;
-use Symfony\Component\Mime\RawMessage;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Bridge\Doctrine\MongoDbOdm\Filter\OrderFilter;
+use App\State\ProductPromotionPaginatedProvider;
 use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
-use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use App\Controller\ProductPromotionController;
 use App\State\ProductPromotionProvider;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -32,8 +28,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ProductsRepository::class)]
 #[ORM\Table(name: 'products')]
 #[Vich\Uploadable]
-#[ApiResource(operations: [
+#[ApiResource(order: ['createAt' => 'ASC'], operations: [
     new GetCollection(uriTemplate: "/products/withActivePromotion", provider: ProductPromotionProvider::class),
+    new GetCollection(uriTemplate: '/products/withPaginatedPromotion', provider: ProductPromotionPaginatedProvider::class),
     new GetCollection(),
     new Get(),
     new Post(
@@ -49,7 +46,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 ], normalizationContext: [
     'groups' => ['product_read', 'create_product']
 ])]
-#[ApiFilter(SearchFilter::class, properties: ['discountPrice' => 'exact'])]
 #[ORM\HasLifecycleCallbacks]
 class Products
 {
@@ -112,8 +108,13 @@ class Products
     #[Assert\NotBlank(message: "Vous devez sélectionner une catégorie", groups: ["update_product", 'create_product'])]
     private ?Category $category = null;
 
-    #[ORM\OneToMany(mappedBy: 'products', targetEntity: Promotions::class)]
+    #[ORM\OneToMany(mappedBy: 'products', targetEntity: Promotions::class, cascade: ['remove'])]
     private Collection $promotions;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['product_read'])]
+    private ?\DateTimeImmutable $createAt = null;
+
 
     #[ApiProperty()]
     #[Groups(['product_read'])]
@@ -252,5 +253,16 @@ class Products
         }
 
         return $this;
+    }
+
+    public function getCreateAt(): ?\DateTimeImmutable
+    {
+        return $this->createAt;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreateAt(): void
+    {
+        $this->createAt = new \DateTimeImmutable();;
     }
 }

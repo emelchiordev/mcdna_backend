@@ -3,17 +3,13 @@
 namespace App\State;
 
 use App\Entity\Products;
-use Doctrine\ORM\EntityManager;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use ApiPlatform\Metadata\CollectionOperationInterface;
-use ApiPlatform\State\Pagination\PaginatorInterface;
-use App\Entity\Promotions;
 
-class ProductPromotionProvider implements ProviderInterface
+class ProductPromotionPaginatedProvider implements ProviderInterface
 {
-
     public function __construct(private EntityManagerInterface $entityManager)
     {
     }
@@ -27,6 +23,7 @@ class ProductPromotionProvider implements ProviderInterface
                 ->where('promo.startDate <= :now')
                 ->andWhere('promo.endDate >= :now')
                 ->setParameter('now', new \DateTime())
+                ->setMaxResults(5)
                 ->getQuery();
             return $queryBuilder->getResult();
         }
