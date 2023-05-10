@@ -39,7 +39,7 @@ RUN mkdir -p var/cache/prod/pools/system && \
     chown -R www-data var/cache/prod && \
     chmod -R 777 var/cache/prod
 
-RUN chown -R www-data && /var/www/html/public/images && \
+RUN chown -R www-data /var/www/html/public/images && \
     chmod -R 777 /var/www/html/public/images
 
 # … cut for readability
