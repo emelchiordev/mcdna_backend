@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ProductsRepository::class)]
 #[ORM\Table(name: 'products')]
 #[Vich\Uploadable]
-#[ApiResource(order: ['createAt' => 'ASC'], operations: [
+#[ApiResource(order: ['createAt' => 'DESC'], operations: [
     new GetCollection(uriTemplate: "/products/withActivePromotion", provider: ProductPromotionProvider::class, security: "is_granted('PUBLIC_ACCESS')"),
     new GetCollection(uriTemplate: '/products/withPaginatedPromotion', provider: ProductPromotionPaginatedProvider::class, security: "is_granted('PUBLIC_ACCESS')"),
     new GetCollection(security: "is_granted('PUBLIC_ACCESS')"),
