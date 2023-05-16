@@ -4,6 +4,8 @@ use App\Entity\Products;
 use App\Entity\Promotions;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Context\ExecutionContext;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\ConstraintViolationException;
 
 final class PromotionsTest extends TestCase
