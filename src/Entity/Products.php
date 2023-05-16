@@ -20,6 +20,8 @@ use App\State\ProductPromotionPaginatedProvider;
 use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\State\ProductPromotionProvider;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -29,20 +31,24 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'products')]
 #[Vich\Uploadable]
 #[ApiResource(order: ['createAt' => 'ASC'], operations: [
-    new GetCollection(uriTemplate: "/products/withActivePromotion", provider: ProductPromotionProvider::class),
-    new GetCollection(uriTemplate: '/products/withPaginatedPromotion', provider: ProductPromotionPaginatedProvider::class),
-    new GetCollection(),
-    new Get(),
+    new GetCollection(uriTemplate: "/products/withActivePromotion", provider: ProductPromotionProvider::class, security: "is_granted('PUBLIC_ACCESS')"),
+    new GetCollection(uriTemplate: '/products/withPaginatedPromotion', provider: ProductPromotionPaginatedProvider::class, security: "is_granted('PUBLIC_ACCESS')"),
+    new GetCollection(security: "is_granted('PUBLIC_ACCESS')"),
+    new Get(security: "is_granted('PUBLIC_ACCESS')"),
+    new Patch(security: "is_granted('ROLE_ADMIN')"),
+    new Put(security: "is_granted('ROLE_ADMIN')"),
     new Post(
         inputFormats: ['multipart' => ['multipart/form-data']],
-        validationContext: ["groups" => "create_product"]
+        validationContext: ["groups" => "create_product"],
+        security: "is_granted('ROLE_ADMIN')"
     ),
     new Post(
         uriTemplate: "/products/{id}",
         inputFormats: ['multipart' => ['multipart/form-data']],
-        validationContext: ["groups" => "update_product"]
+        validationContext: ["groups" => "update_product"],
+        security: "is_granted('ROLE_ADMIN')"
     ),
-    new Delete()
+    new Delete(security: "is_granted('ROLE_ADMIN')")
 ], normalizationContext: [
     'groups' => ['product_read', 'create_product']
 ])]

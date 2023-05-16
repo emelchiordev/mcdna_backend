@@ -14,16 +14,20 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use App\Repository\PromotionsRepository;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Put;
 use App\State\PromotionEndDateProcessor;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: PromotionsRepository::class)]
 #[ApiResource(operations: [
-    new Post(processor: PromotionEndDateProcessor::class),
-    new GetCollection(),
-    new Get(),
-    new Delete()
+    new Post(processor: PromotionEndDateProcessor::class, security: "is_granted('ROLE_ADMIN')"),
+    new GetCollection(security: "is_granted('PUBLIC_ACCESS')"),
+    new Get(security: "is_granted('PUBLIC_ACCESS')"),
+    new Delete(security: "is_granted('ROLE_ADMIN')"),
+    new Put(security: "is_granted('ROLE_ADMIN')"),
+    new Patch(security: "is_granted('ROLE_ADMIN')")
 ])]
 #[ApiFilter(SearchFilter::class, properties: ['products.id' => 'exact'])]
 class Promotions
