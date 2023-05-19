@@ -32,11 +32,11 @@ Assurez-vous d'avoir les éléments suivants installés avant de commencer :
 
 1. Clonez le dépôt :
 
-git clone [https://github.com/votre-utilisateur/nom-du-projet.git](https://github.com/emelchiordev/mercadona_front.git)
+git clone [[[https://github.com/votre-utilisateur/nom-du-projet.git](https://github.com/emelchiordev/mercadona_front.git)](https://github.com/emelchiordev/mercadona_backend.git)](https://github.com/emelchiordev/mercadona_backend.git)
 
 2. Accédez au répertoire du projet :
 
-cd mercadona_front
+cd mercadona_backend
 
 3. Installez les dépendances :
 
