@@ -269,6 +269,6 @@ class Products
     #[ORM\PrePersist]
     public function setCreateAt(): void
     {
-        $this->createAt = new \DateTimeImmutable();;
+        $this->createAt = new \DateTimeImmutable();
     }
 }
