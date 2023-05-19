@@ -13,8 +13,9 @@ Partie BACKEND de l'application MERCADONA
 Assurez-vous d'avoir les éléments suivants installés avant de commencer :
 
 - PHP 8.1
-- COMPOSER
-- POSTGRESQL
+- COMPOSER 2.5.5
+- POSTGRESQL 15
+- SYMFONY CLI 4.28.1
 
 ## ENVIRONNEMENT
 
