@@ -39,6 +39,12 @@ class Promotions
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
     #[Assert\NotBlank(message: "Vous devez saisir un pourcentage de remise")]
+    #[Assert\Type(type: 'numeric', message: "Le pourcentage de remise doit être un nombre")]
+    #[Assert\Range(
+        min: 1,
+        max: 99,
+        notInRangeMessage: "Le pourcentage de remise doit être au moins de 1% et ne doit pas dépasser 99%",
+    )]
     private ?string $percentage = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
