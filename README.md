@@ -19,9 +19,14 @@ Assurez-vous d'avoir les éléments suivants installés avant de commencer :
 
 ## ENVIRONNEMENT
 
-API_URL="adresse_backend/api/"
-
-IMAGE_URL="adresse_backend/images/products/"
+- APP_ENV=(prod ou dev)
+- APP_SECRET="secret"
+- DATABASE_URL="postgresql://username:password@databasename:5432/app?serverVersion=15&charset=utf8"
+- JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem
+- JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
+- JWT_PASSPHRASE="PASSPHRASE"
+- CORS_ALLOW_ORIGIN='adresse_autorisé'
+- XDEBUG_MODE=coverage
 
 ## Installation
 
